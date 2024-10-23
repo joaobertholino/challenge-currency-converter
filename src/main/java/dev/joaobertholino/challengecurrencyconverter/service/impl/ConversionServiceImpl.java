@@ -1,5 +1,6 @@
 package dev.joaobertholino.challengecurrencyconverter.service.impl;
 
+import dev.joaobertholino.challengecurrencyconverter.enums.CurrencyCode;
 import dev.joaobertholino.challengecurrencyconverter.response.PairConversionResponse;
 import dev.joaobertholino.challengecurrencyconverter.util.RequestAuthConfig;
 import dev.joaobertholino.challengecurrencyconverter.response.StandardConversionResponse;
@@ -15,13 +16,17 @@ public class ConversionServiceImpl implements ConversionService {
 	private final RequestAuthConfig authConfig;
 
 	@Override
-	public StandardConversionResponse standardConversion(String currencyCode, HttpServletRequest request) {
-		return this.authConfig.templateAuthConfig(request).getForObject("/latest/" + currencyCode, StandardConversionResponse.class);
+	public StandardConversionResponse standardConversion(CurrencyCode currencyCode, HttpServletRequest request) {
+		return this.authConfig.templateAuthConfig(request).getForObject("/latest/" + currencyCode.getCode(), StandardConversionResponse.class);
 	}
 
 	@Override
-	public PairConversionResponse pairConversion(String baseCode, String targetCode, Double amount, HttpServletRequest request) {
+	public PairConversionResponse pairConversion(CurrencyCode baseCode, CurrencyCode targetCode, Double amount, HttpServletRequest request) {
+		if(baseCode.equals(targetCode)) {
+			throw new RuntimeException("Os códigos de moeda são iguais");
+		}
+
 		RestTemplate template = this.authConfig.templateAuthConfig(request);
-		return template.getForObject("/pair/" + baseCode + "/" + targetCode + "/" + amount, PairConversionResponse.class);
+		return template.getForObject("/pair/" + baseCode.getCode() + "/" + targetCode.getCode() + "/" + amount, PairConversionResponse.class);
 	}
 }

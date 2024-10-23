@@ -1,5 +1,6 @@
 package dev.joaobertholino.challengecurrencyconverter.controller;
 
+import dev.joaobertholino.challengecurrencyconverter.enums.CurrencyCode;
 import dev.joaobertholino.challengecurrencyconverter.response.PairConversionResponse;
 import dev.joaobertholino.challengecurrencyconverter.response.StandardConversionResponse;
 import dev.joaobertholino.challengecurrencyconverter.service.ConversionService;
@@ -18,13 +19,13 @@ public class ConversionController {
 	private final ConversionService conversionService;
 
 	@GetMapping("/standard")
-	public ResponseEntity<StandardConversionResponse> standardConversion(@RequestParam String currencyCode, HttpServletRequest request) {
+	public ResponseEntity<StandardConversionResponse> standardConversion(@RequestParam CurrencyCode currencyCode, HttpServletRequest request) {
 		StandardConversionResponse standardConversionResponse = this.conversionService.standardConversion(currencyCode, request);
 		return ResponseEntity.status(200).body(standardConversionResponse);
 	}
 
 	@GetMapping("/pair")
-	public ResponseEntity<PairConversionResponse> pairConversion(@RequestParam String baseCode, @RequestParam String targetCode, @RequestParam Double amount, HttpServletRequest request) {
+	public ResponseEntity<PairConversionResponse> pairConversion(@RequestParam CurrencyCode baseCode, @RequestParam CurrencyCode targetCode, @RequestParam Double amount, HttpServletRequest request) {
 		PairConversionResponse pairConversionResponse = this.conversionService.pairConversion(baseCode, targetCode, amount, request);
 		return ResponseEntity.status(200).body(pairConversionResponse);
 	}
