@@ -6,6 +6,6 @@ import dev.joaobertholino.challengecurrencyconverter.response.StandardConversion
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface ConversionService {
-	StandardConversionResponse standardConversion(CurrencyCode currencyCodes, HttpServletRequest request);
-	PairConversionResponse pairConversion(CurrencyCode baseCode, CurrencyCode targetCode, Double amount, HttpServletRequest request);
+	StandardConversionResponse standardConversion(CurrencyCode currencyCodes, String authHeader);
+	PairConversionResponse pairConversion(CurrencyCode baseCode, CurrencyCode targetCode, Double amount, String authHeader);
 }
